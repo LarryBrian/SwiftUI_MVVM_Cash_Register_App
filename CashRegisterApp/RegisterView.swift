@@ -64,7 +64,7 @@ struct ValueSlider: View {
                     .bold()
                     .foregroundStyle(.softBlack)
                 Spacer()
-                Text(NumberHelper().getRoundedNumberString(given: valueReference, by: 2))
+                Text("$\(NumberHelper().getRoundedNumberString(given: valueReference, by: 2))")
                     .font(.title2)
                     .bold()
                     .foregroundStyle(.softBlack)
