@@ -18,8 +18,11 @@ import SwiftUI
         
         // List all currency values in array in Tuple (String, Double) format
         let currencyValues: [(String, Double)] = [("ONE HUNDRED", 100.00), ("FIFTY", 50.00), ("TWENTY", 20.00), ("TEN", 10.00), ("FIVE", 5.00), ("TWO", 2.00), ("ONE", 1.00), ("HALF DOLLAR", 0.50), ("QUARTER", 0.25), ("DIME", 0.10), ("NICKEL", 0.05), ("PENNY", 0.01)]
+                
+        let purchasePriceDecimal: Decimal = NSNumber(floatLiteral: purchasePrice).decimalValue
+        let cashGivenDecimal: Decimal = NSNumber(floatLiteral: cashGiven).decimalValue
         
-        var changeAmount = cashGiven - purchasePrice
+        var changeAmount = cashGivenDecimal - purchasePriceDecimal
         var changeDictionary = [String: Int]()
         
         if changeAmount < 0 {
@@ -31,8 +34,11 @@ import SwiftUI
         } else {
             // Loop through array currency array and extract out the count of each needed into new dictionary
             for (currency, value) in currencyValues {
-                while changeAmount >= value {
-                    changeAmount = changeAmount - value
+                while changeAmount >= NSNumber(floatLiteral: value).decimalValue {
+                    print("change amount: \(changeAmount), value: \(value)")
+                    changeAmount = changeAmount - NSNumber(floatLiteral: value).decimalValue
+                    
+                    print("change amount: \(changeAmount)")
                     changeDictionary[currency, default: 0] += 1
                 }
             }
