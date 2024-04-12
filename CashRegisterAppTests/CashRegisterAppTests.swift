@@ -78,10 +78,38 @@ final class CashRegisterAppTests: XCTestCase {
         XCTAssertTrue(na == ChangeOutputs.NA.rawValue)
     }
     
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
+    func testColorCorrelationAccuracy() {
+        XCTAssertEqual(viewModel.getColorCorrelation(for: .Insufficient), .red)
+        XCTAssertEqual(viewModel.getColorCorrelation(for: .Positive), .green)
+        XCTAssertEqual(viewModel.getColorCorrelation(for: .Zero), .yellow)
+        XCTAssertEqual(viewModel.getColorCorrelation(for: .NA), .softBlack)
+    }
+    
+    func testChangeOutputAccuracy() {
+        viewModel.changeDue = "DIME: 1"
+        XCTAssertEqual(viewModel.getChangeOutput(), .Positive)
+        
+        viewModel.changeDue = "Zero"
+        XCTAssertEqual(viewModel.getChangeOutput(), .Zero)
+        
+        viewModel.changeDue = "N/A"
+        XCTAssertEqual(viewModel.getChangeOutput(), .NA)
+        
+        viewModel.changeDue = "Insufficient Funds"
+        XCTAssertEqual(viewModel.getChangeOutput(), .Insufficient)
+    }
+    
+    func testRoundedNumberHelperFunctionality() {
+        let testNumber = 6.582345
+        let roundedTestResult = NumberHelper().getRoundedNumberString(given: testNumber, by: 2)
+        
+        XCTAssertEqual(roundedTestResult, "6.58")
+    }
+    
+    func testPerformanceOfChangeCalculation() throws {
         measure {
             // Put the code you want to measure the time of here.
+            let _ = viewModel.calculateChange(2.00, 4.00)
         }
     }
 
